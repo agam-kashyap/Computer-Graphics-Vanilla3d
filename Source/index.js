@@ -12,7 +12,7 @@ import Mesh from './3DMesh.js';
 const renderer = new Renderer();
 const gl = renderer.webGlContext();
 
-renderer.clear();
+// renderer.clear();
 
 const shader = new Shader(gl, vertexShaderSrc, fragmentShaderSrc);
 shader.use();
@@ -34,8 +34,8 @@ shader.use();
 var proj = {
     fovy: Math.PI/3,
     aspect: window.innerWidth/ window.innerHeight,
-    near: 0,
-    far: 1000,
+    near: 1,
+    far: 10000,
 }
 /************************* 
 ******* Camera Setup *****
@@ -116,7 +116,6 @@ fetch('./models/Cube.obj')
         CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
         CubeRead=true;
         console.log(CubeMeshObject);
-        debugger;
         CubeMesh = new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, CubeColor, camera);
     })
 
@@ -197,11 +196,11 @@ window.onload = () =>
         pointerX = pointerX - render_area.left;
         pointerY = render_area.bottom - pointerY;
 
-        if(SelectMode == true && mode_value==5)
+        if(SelectMode == true && mode_value==7)
         {
             // Face Selection
         }
-        else if(SelectMode == false && mode_value==5)
+        else if(SelectMode == false && mode_value==7)
         {
             // Object Selection
             var pixels = new Uint8Array(4);
@@ -238,116 +237,8 @@ window.onload = () =>
     });
 
     document.addEventListener("keydown", (ev) => {
-        if(mode_value != 5)
-        {
-            CubeSelected = false;
-            IcosphereSelected = false;
-            TorusSelected = false;
-        }
-        if(ev.key == "d")
-        {
-            ArrowX.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
-            ArrowX.transform.updateMVPMatrix();
-            ArrowY.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
-            ArrowY.transform.updateMVPMatrix();
-            ArrowZ.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
-            ArrowZ.transform.updateMVPMatrix();
-            mode_value = 1;
-            CentreTriangleToggle=true;
 
-            // Place Cube at the top of the triangle
-            CubeToggle = true;
-            CubeMesh.transform.setTranslate(pointA);
-            CubeMesh.transform.updateMVPMatrix();
-            // Place Icospehere at the bottom left of triangle
-            IcosphereToggle = true;
-            IcosphereMesh.transform.setTranslate(pointB);
-            IcosphereMesh.transform.updateMVPMatrix();
-            // Place Torus at the bottom right of triangle
-            TorusToggle = true;
-            TorusMesh.transform.setTranslate(pointC);
-            TorusMesh.transform.updateMVPMatrix();
-        }
-        else if(ev.key == "e")
-        {
-            console.log("e");
-            mode_value = 2;
-            CentreTriangleToggle=true;
-
-            var midAB = vec3.fromValues((pointA[0]+pointB[0])/2, (pointA[1]+pointB[1])/2, (pointA[2]+pointB[2])/2);
-            var midBC = vec3.fromValues((pointB[0]+pointC[0])/2, (pointB[1]+pointC[1])/2, (pointB[2]+pointC[2])/2);
-            var midCA = vec3.fromValues((pointC[0]+pointA[0])/2, (pointC[1]+pointA[1])/2, (pointC[2]+pointA[2])/2);
-
-            // Place Cube at the center of side AB of the triangle
-            CubeToggle = true;
-            CubeMesh.transform.setTranslate(midAB);
-            CubeMesh.transform.updateMVPMatrix();
-            // Place Icospehere at the center of side BC of triangle
-            IcosphereToggle = true;
-            IcosphereMesh.transform.setTranslate(midBC);
-            IcosphereMesh.transform.updateMVPMatrix();
-            // Place Torus at the center of side CA of triangle
-            TorusToggle = true;
-            TorusMesh.transform.setTranslate(midCA);
-            TorusMesh.transform.updateMVPMatrix();
-        }
-
-        else if(ev.key == "f")
-        {
-            console.log("f");
-            mode_value = 3;
-            CentreTriangleToggle=true;
-
-            // Place Cube at the center of side AB of the triangle
-            CubeToggle = true;
-            CubeMesh.transform.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
-            CubeMesh.transform.updateMVPMatrix();
-            // Place Icospehere at the center of side BC of triangle
-            IcosphereToggle = true;
-            IcosphereMesh.transform.setRotate(vec3.fromValues(0,0,1), IcosphereAngle += Math.PI/2);
-            IcosphereMesh.transform.updateMVPMatrix();
-            // Place Torus at the center of side CA of triangle
-            TorusToggle = true;
-            TorusMesh.transform.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
-            TorusMesh.transform.updateMVPMatrix();
-        }
-
-        else if(ev.key == "g")
-        {
-            console.log("g");
-            mode_value = 4;
-            CentreTriangleToggle=true;
-
-            // Place Cube at the center of side AB of the triangle
-            CubeToggle = true;
-            var CubeScale = CubeMesh.getScale();
-            CubeMesh.transform.setScale([CubeScale[0]*0.5, CubeScale[0]*0.5, CubeScale[0]*0.5]);
-            CubeMesh.transform.updateMVPMatrix();
-            // Place Icospehere at the center of side BC of triangle
-            IcosphereToggle = true;
-            var IcosphereScale = IcosphereMesh.getScale();
-            IcosphereMesh.transform.setScale([IcosphereScale[0]*2,IcosphereScale[0]*2,IcosphereScale[0]*2]);
-            IcosphereMesh.transform.updateMVPMatrix();
-            // Place Torus at the center of side CA of triangle
-            TorusToggle = true;
-            var TorusScale = TorusMesh.getScale();
-            TorusMesh.transform.setScale([TorusScale[0]*3,TorusScale[0]*3,TorusScale[0]*3]);
-            TorusMesh.transform.updateMVPMatrix();
-        }
-
-        else if(ev.key == "h")
-        {
-            mode_value = 5;
-        }
-
-        else if(ev.key == "i")
-        {
-            mode_value = 6;
-            //Rotate Mode
-
-        }
-
-        else if(ev.key == "r" && mode_value == 6)
+        if(ev.key == "ArrowLeft" && mode_value == 6)
         {
             CameraAngle += Math.PI/100;
             var tempCamera = camera;
@@ -364,7 +255,7 @@ window.onload = () =>
             CentreTriangle.updateCamera(tempCamera);
         }
         
-        else if(ev.shiftKey && ev.key == "R" && mode_value == 6)
+        else if(ev.key == "ArrowRight" && mode_value == 6)
         {
             CameraAngle -= Math.PI/100;
             var tempCamera = camera;
@@ -379,6 +270,24 @@ window.onload = () =>
             IcosphereMesh.updateCamera(tempCamera);
             TorusMesh.updateCamera(tempCamera);
             CentreTriangle.updateCamera(tempCamera);
+        }
+
+        else if(ev.key == "r" && mode_value == 5)
+        {
+            CentreTriangleToggle=true;
+
+            // Place Cube at the center of side AB of the triangle
+            CubeToggle = true;
+            CubeMesh.transform.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
+            CubeMesh.transform.updateMVPMatrix();
+            // Place Icospehere at the center of side BC of triangle
+            IcosphereToggle = true;
+            IcosphereMesh.transform.setRotate(vec3.fromValues(0,0,1), IcosphereAngle += Math.PI/2);
+            IcosphereMesh.transform.updateMVPMatrix();
+            // Place Torus at the center of side CA of triangle
+            TorusToggle = true;
+            TorusMesh.transform.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
+            TorusMesh.transform.updateMVPMatrix();        
         }
 
         else if(ev.key == 'Escape')
@@ -417,6 +326,125 @@ mouseYElement.appendChild(mouseY);
 
 //////////////////////////////////////////////////////
 ////// Setting up the modes using on change value ///
+console.log(document.getElementById("mode"));
+
+document.getElementById("Mode").onchange = function () {
+    if(mode_value != 5)
+    {
+            CubeSelected = false;
+            IcosphereSelected = false;
+            TorusSelected = false;
+    }
+
+    if(this.value == "Axes")
+    {
+        mode_value = 1;
+        ArrowX.transform.setTranslate(vec3.fromValues(0, 0, 0));
+        ArrowX.transform.updateMVPMatrix();
+        ArrowY.transform.setTranslate(vec3.fromValues(0, 0, 0));
+        ArrowY.transform.updateMVPMatrix();
+        ArrowZ.transform.setTranslate(vec3.fromValues(0, 0, 0));
+        ArrowZ.transform.updateMVPMatrix();
+        CentreTriangleToggle=false;
+        CubeToggle = false;
+        IcosphereToggle = false;
+        TorusToggle = false;
+    }
+    else if( this.value == "Triangle Corner")
+    {
+        ArrowX.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowX.transform.updateMVPMatrix();
+        ArrowY.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowY.transform.updateMVPMatrix();
+        ArrowZ.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowZ.transform.updateMVPMatrix();
+        mode_value = 2;
+        CentreTriangleToggle=true;
+
+        // Place Cube at the top of the triangle
+        CubeToggle = true;
+        CubeMesh.transform.setTranslate(pointA);
+        CubeMesh.transform.updateMVPMatrix();
+        // Place Icospehere at the bottom left of triangle
+        IcosphereToggle = true;
+        IcosphereMesh.transform.setTranslate(pointB);
+        IcosphereMesh.transform.updateMVPMatrix();
+        // Place Torus at the bottom right of triangle
+        TorusToggle = true;
+        TorusMesh.transform.setTranslate(pointC);
+        TorusMesh.transform.updateMVPMatrix();
+    }
+    else if(this.value == "Triangle Side")
+    {
+        mode_value = 3;
+        CentreTriangleToggle=true;
+
+        var midAB = vec3.fromValues((pointA[0]+pointB[0])/2, (pointA[1]+pointB[1])/2, (pointA[2]+pointB[2])/2);
+        var midBC = vec3.fromValues((pointB[0]+pointC[0])/2, (pointB[1]+pointC[1])/2, (pointB[2]+pointC[2])/2);
+        var midCA = vec3.fromValues((pointC[0]+pointA[0])/2, (pointC[1]+pointA[1])/2, (pointC[2]+pointA[2])/2);
+
+        // Place Cube at the center of side AB of the triangle
+        CubeToggle = true;
+        CubeMesh.transform.setTranslate(midAB);
+        CubeMesh.transform.updateMVPMatrix();
+        // Place Icospehere at the center of side BC of triangle
+        IcosphereToggle = true;
+        IcosphereMesh.transform.setTranslate(midBC);
+        IcosphereMesh.transform.updateMVPMatrix();
+        // Place Torus at the center of side CA of triangle
+        TorusToggle = true;
+        TorusMesh.transform.setTranslate(midCA);
+        TorusMesh.transform.updateMVPMatrix();
+    }
+    else if(this.value == "Scale")
+    {
+        mode_value = 4;
+        CentreTriangleToggle=true;
+
+        // Place Cube at the center of side AB of the triangle
+        CubeToggle = true;
+        var CubeScale = CubeMesh.getScale();
+        CubeMesh.transform.setScale([CubeScale[0]*0.5, CubeScale[0]*0.5, CubeScale[0]*0.5]);
+        CubeMesh.transform.updateMVPMatrix();
+        // Place Icospehere at the center of side BC of triangle
+        IcosphereToggle = true;
+        var IcosphereScale = IcosphereMesh.getScale();
+        IcosphereMesh.transform.setScale([IcosphereScale[0]*2,IcosphereScale[0]*2,IcosphereScale[0]*2]);
+        IcosphereMesh.transform.updateMVPMatrix();
+        // Place Torus at the center of side CA of triangle
+        TorusToggle = true;
+        var TorusScale = TorusMesh.getScale();
+        TorusMesh.transform.setScale([TorusScale[0]*3,TorusScale[0]*3,TorusScale[0]*3]);
+        TorusMesh.transform.updateMVPMatrix();
+    }
+    else if(this.value == "Object Rotate")
+    {
+        mode_value = 5;
+        CentreTriangleToggle=true;
+
+        // Place Cube at the center of side AB of the triangle
+        CubeToggle = true;
+        CubeMesh.transform.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
+        CubeMesh.transform.updateMVPMatrix();
+        // Place Icospehere at the center of side BC of triangle
+        IcosphereToggle = true;
+        IcosphereMesh.transform.setRotate(vec3.fromValues(0,0,1), IcosphereAngle += Math.PI/2);
+        IcosphereMesh.transform.updateMVPMatrix();
+        // Place Torus at the center of side CA of triangle
+        TorusToggle = true;
+        TorusMesh.transform.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
+        TorusMesh.transform.updateMVPMatrix();
+    }
+    else if(this.value == "Camera Rotate")
+    {
+        mode_value = 6;
+    }
+    else
+    {
+        mode_value = 7;
+    }
+
+};
 
 function animate()
 {
@@ -452,7 +480,7 @@ function animate()
     {
         TorusMesh.draw(shader, TorusSelected);
     }
-    if(mode_value == 5)
+    if(mode_value == 7)
     {
         document.getElementsByClassName("toggle-button-cover")[0].style.display = "block";
     }

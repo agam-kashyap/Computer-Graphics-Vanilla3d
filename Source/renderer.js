@@ -9,8 +9,8 @@ export default class Renderer
         const gl = this.canvas.getContext("webgl") || this.canvas.getContext("experimental-webgl");
 
         if (!gl) throw new Error("WebGL not supported");
-        gl.enable(gl.DEPTH_TEST);
-        gl.depthFunc(gl.ALWAYS);
+        // gl.enable(gl.DEPTH_TEST);
+        // gl.depthFunc(gl.ALWAYS);
         this.gl = gl;
 
         this.resizeCanvas();
@@ -33,8 +33,6 @@ export default class Renderer
     
     resizeCanvas()
     {
-        // this.canvas.width = Math.min(window.innerWidth,window.innerHeight);
-		// this.canvas.height = this.canvas.width
         this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -46,6 +44,8 @@ export default class Renderer
     }
     clear()
     {
+        this.gl.enable(this.gl.DEPTH_TEST);
+        // this.gl.depthFunc(this.gl.LEQUAL);
         this.gl.clearColor(1.0,1.0,1.0,1.0);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     }

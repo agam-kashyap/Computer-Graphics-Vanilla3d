@@ -52,7 +52,6 @@ export default class Arrow
         shader.setUniformMatrix4fv(modelUniform, this.transform.getModelMatrix());
         
         const project = mat4.create();
-        // mat4.ortho(project, this.proj['left'], this.proj['right'], this.proj['bottom'], this.proj['top'], this.proj['near'], this.proj['far']);
         mat4.perspective(project, this.proj.fovy, this.proj.aspect, this.proj.near, this.proj.far);
 
         const projectUniform = shader.uniform("Project");
@@ -86,5 +85,15 @@ export default class Arrow
         this.eye = vec3.fromValues(camera.eye.x, camera.eye.y, camera.eye.z);
         this.center = vec3.fromValues(camera.center.x, camera.center.y, camera.center.z);
         this.up = vec3.fromValues(camera.up.x, camera.up.y, camera.up.z);
+    }
+
+    resetTranslate()
+    {
+
+    }
+
+    setTranslate()
+    {
+
     }
 };

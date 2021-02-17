@@ -3,10 +3,9 @@ body {
   overflow: hidden;
   margin: 0;
   font-family: monospace;
-  z-index: 100;
+  /* z-index: 100; */
   font-size: 1.3em;
   color: white;
-  background-color: #333;
 }
 
 .Content-Box {
