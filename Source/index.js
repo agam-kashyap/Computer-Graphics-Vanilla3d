@@ -7,6 +7,7 @@ import objLoader from 'https://cdn.skypack.dev/webgl-obj-loader';
 import Arrow from './Arrow.js';
 import Triangle from './Triangle.js';
 import Mesh from './3DMesh.js';
+import SuperMesh from './SuperMesh.js';
 
 /* Canvas Setup Begins */
 const renderer = new Renderer();
@@ -101,8 +102,13 @@ fetch('./models/Arrow.obj')
 //////////////// CUBE ///////////////////////////////
 var CubeAngle = 0;
 var CubeRead=false;
-var CubeMeshObject; // Text file content
-var CubeMesh; // Shader Object to be drawn
+var side1 = false;
+var side2 = false;
+var side3 = false;
+var side4 = false;
+var side5 = false;
+var side6 = false;
+var CubeMesh = new SuperMesh(gl); // Shader Object to be drawn
 var CubeAngleX=0;
 var CubeRotationAxis= vec3.create();
 vec3.set(CubeRotationAxis, 1, 0, 0);
@@ -110,42 +116,148 @@ var CubeColor = new Float32Array([0.2, 0.7, 0.6, 1.0]);
 var CubeToggle=false;
 var CubeSelected = false;
 
-fetch('./models/Cube.obj')
+fetch('./models/Cube/Side1.obj')
     .then(response => response.text())
     .then(data => {
-        CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
-        CubeRead=true;
-        console.log(CubeMeshObject);
-        CubeMesh = new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, CubeColor, camera);
+        var CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        side1=true;
+        CubeMesh.addSubMesh(new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, new Float32Array([0.2, 0.7, 0.6, 1.0]), camera));
+        if(side1 && side2 && side3 && side4 && side5 && side6)
+        {
+            CubeRead = true;
+        }
+    })
+fetch('./models/Cube/Side2.obj')
+    .then(response => response.text())
+    .then(data => {
+        var CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        side2=true;
+        CubeMesh.addSubMesh(new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, new Float32Array([0.2, 0.7, 0.615, 1.0]), camera));
+        if(side1 && side2 && side3 && side4 && side5 && side6)
+        {
+            CubeRead = true;
+        }
+    })
+fetch('./models/Cube/Side3.obj')
+    .then(response => response.text())
+    .then(data => {
+        var CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        side3=true;
+        CubeMesh.addSubMesh(new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, new Float32Array([0.2, 0.7, 0.62, 1.0]), camera));
+        if(side1 && side2 && side3 && side4 && side5 && side6)
+        {
+            CubeRead = true;
+        }
+    })
+fetch('./models/Cube/Side4.obj')
+    .then(response => response.text())
+    .then(data => {
+        var CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        side4=true;
+        CubeMesh.addSubMesh(new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, new Float32Array([0.2, 0.7, 0.63, 1.0]), camera));
+        if(side1 && side2 && side3 && side4 && side5 && side6)
+        {
+            CubeRead = true;
+        }
+    })
+
+fetch('./models/Cube/Side5.obj')
+    .then(response => response.text())
+    .then(data => {
+        var CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        side5=true;
+        CubeMesh.addSubMesh(new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, new Float32Array([0.2, 0.7, 0.64, 1.0]), camera));
+        if(side1 && side2 && side3 && side4 && side5 && side6)
+        {
+            CubeRead = true;
+        }
+    })
+fetch('./models/Cube/Side6.obj')
+    .then(response => response.text())
+    .then(data => {
+        var CubeMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        side6=true;
+        CubeMesh.addSubMesh(new Mesh(gl, CubeMeshObject, CubeAngleX, CubeRotationAxis, proj, new Float32Array([0.2, 0.7, 0.65, 1.0]), camera));
+        if(side1 && side2 && side3 && side4 && side5 && side6)
+        {
+            CubeRead = true;
+        }
     })
 
 ////////////////////////////////////////////////////
-//////////////// Icosphere ///////////////////////////////
-var IcosphereAngle = 0;
-var IcosphereRead=false;
-var IcosphereMeshObject; // Text file content
-var IcosphereMesh; // Shader Object to be drawn
-var IcosphereAngleX=0;
-var IcosphereRotationAxis= vec3.create();
-vec3.set(IcosphereRotationAxis, 1, 0, 0);
-var IcosphereColor = new Float32Array([1.0, 0.2, 0.2, 1.0]);
-var IcosphereToggle=false;
-var IcosphereSelected = false;
+//////////////// Random ///////////////////////////////
+var RandomAngle = 0;
+var RandomRead=false;
+var Part1 = false;
+var Part2 = false;
+var Part3 = false;
+var Part4 = false;
 
-fetch('./models/Icosphere.obj')
+var RandomMesh= new SuperMesh(gl); // Shader Object to be drawn
+var RandomAngleX=0;
+var RandomRotationAxis= vec3.create();
+vec3.set(RandomRotationAxis, 1, 0, 0);
+var RandomColor = new Float32Array([1.0, 0.2, 0.2, 1.0]);
+var RandomToggle=false;
+var RandomSelected = false;
+
+fetch('./models/Surprise/RandomPart1.obj')
     .then(response => response.text())
     .then(data => {
-        IcosphereMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
-        IcosphereRead=true;
-        IcosphereMesh = new Mesh(gl, IcosphereMeshObject, IcosphereAngleX, IcosphereRotationAxis, proj, IcosphereColor, camera);
+        var RandomMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Part1 = true;
+        RandomMesh.addSubMesh(new Mesh(gl, RandomMeshObject, RandomAngleX, RandomRotationAxis, proj, new Float32Array([1.0, 0.2, 0.2, 1.0]), camera));
+        if(Part1 && Part2 && Part3 && Part4)
+        {
+            RandomRead = true;
+        }
     })
 
+fetch('./models/Surprise/RandomPart2.obj')
+    .then(response => response.text())
+    .then(data => {
+        var RandomMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Part2 = true;
+        RandomMesh.addSubMesh(new Mesh(gl, RandomMeshObject, RandomAngleX, RandomRotationAxis, proj, new Float32Array([1.0, 0.2, 0.21, 1.0]), camera));
+        if(Part1 && Part2 && Part3 && Part4)
+        {
+            RandomRead = true;
+        }
+    })
+
+fetch('./models/Surprise/RandomPart3.obj')
+    .then(response => response.text())
+    .then(data => {
+        var RandomMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Part3 = true;
+        RandomMesh.addSubMesh(new Mesh(gl, RandomMeshObject, RandomAngleX, RandomRotationAxis, proj, new Float32Array([1.0, 0.2, 0.22, 1.0]), camera));
+        if(Part1 && Part2 && Part3 && Part4)
+        {
+            RandomRead = true;
+        }
+    })
+
+fetch('./models/Surprise/RandomPart4.obj')
+    .then(response => response.text())
+    .then(data => {
+        var RandomMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Part4 = true;
+        RandomMesh.addSubMesh(new Mesh(gl, RandomMeshObject, RandomAngleX, RandomRotationAxis, proj, new Float32Array([1.0, 0.2, 0.23, 1.0]), camera));
+        if(Part1 && Part2 && Part3 && Part4)
+        {
+            RandomRead = true;
+        }
+    })
 ////////////////////////////////////////////////////
 //////////////// Torus ///////////////////////////////
 var TorusAngle=0;
-var TorusMeshObject; // Text file content
 var TorusRead=false;
-var TorusMesh; // Shader Object to be drawn
+var Quater1 = false;
+var Quater2 = false;
+var Quater3 = false;
+var Quater4 = false;
+
+var TorusMesh = new SuperMesh(gl); // Shader Object to be drawn
 var TorusAngleX=0;
 var TorusRotationAxis= vec3.create();
 vec3.set(TorusRotationAxis, 1, 0, 0);
@@ -153,14 +265,53 @@ var TorusColor = new Float32Array([0.199, 0.499, 0.6, 1.0]);
 var TorusToggle=false;
 var TorusSelected = false;
 
-fetch('./models/Torus.obj')
+fetch('./models/Torus/TQuater1.obj')
     .then(response => response.text())
     .then(data => {
-        TorusMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
-        TorusRead=true;
-        TorusMesh = new Mesh(gl, TorusMeshObject, TorusAngleX, TorusRotationAxis, proj, TorusColor, camera);
+        var TorusMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Quater1 = true;
+        TorusMesh.addSubMesh(new Mesh(gl, TorusMeshObject, TorusAngleX, TorusRotationAxis, proj, new Float32Array([0.199, 0.499, 0.6, 1.0]), camera));
+        if(Quater1 && Quater2 && Quater3 && Quater4)
+        {
+            TorusRead = true;
+        }
     })
 
+fetch('./models/Torus/TQuater2.obj')
+    .then(response => response.text())
+    .then(data => {
+        var TorusMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Quater2 = true;
+        TorusMesh.addSubMesh(new Mesh(gl, TorusMeshObject, TorusAngleX, TorusRotationAxis, proj, new Float32Array([0.199, 0.499, 0.61, 1.0]), camera));
+        if(Quater1 && Quater2 && Quater3 && Quater4)
+        {
+            TorusRead = true;
+        }
+    })
+
+fetch('./models/Torus/TQuater3.obj')
+    .then(response => response.text())
+    .then(data => {
+        var TorusMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Quater3 = true;
+        TorusMesh.addSubMesh(new Mesh(gl, TorusMeshObject, TorusAngleX, TorusRotationAxis, proj, new Float32Array([0.199, 0.499, 0.62, 1.0]), camera));
+        if(Quater1 && Quater2 && Quater3 && Quater4)
+        {
+            TorusRead = true;
+        }
+    })
+
+fetch('./models/Torus/TQuater4.obj')
+    .then(response => response.text())
+    .then(data => {
+        var TorusMeshObject = JSON.parse(JSON.stringify(new objLoader.Mesh(data)));
+        Quater4 = true;
+        TorusMesh.addSubMesh(new Mesh(gl, TorusMeshObject, TorusAngleX, TorusRotationAxis, proj, new Float32Array([0.199, 0.499, 0.63, 1.0]), camera));
+        if(Quater1 && Quater2 && Quater3 && Quater4)
+        {
+            TorusRead = true;
+        }
+    })
 //////////////////////////////////////////////////////
 //////////////// Triangle ///////////////////////////////
 var CentreTriangleToggle=false;
@@ -196,41 +347,67 @@ window.onload = () =>
         pointerX = pointerX - render_area.left;
         pointerY = render_area.bottom - pointerY;
 
+        var pixels = new Uint8Array(4);
+        gl.readPixels(pointerX, pointerY, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
         if(SelectMode == true && mode_value==7)
         {
             // Face Selection
+            var FaceCube = CubeMesh.isFaceSelected(pixels);
+            var FaceRandom = RandomMesh.isFaceSelected(pixels);
+            var FaceTorus = TorusMesh.isFaceSelected(pixels);
+            console.log(FaceCube);
+            if(FaceCube == 1)
+            {
+                RandomMesh.resetSelected();
+                TorusMesh.resetSelected();
+            }
+            else if(FaceRandom == 1)
+            {
+                CubeMesh.resetSelected();
+                TorusMesh.resetSelected();
+            }
+            else if(FaceTorus == 1)
+            {
+                CubeMesh.resetSelected();
+                RandomMesh.resetSelected();
+            }
+            else
+            {
+                CubeMesh.resetSelected();
+                RandomMesh.resetSelected();
+                TorusMesh.resetSelected();
+            }
         }
         else if(SelectMode == false && mode_value==7)
         {
             // Object Selection
-            var pixels = new Uint8Array(4);
-            gl.readPixels(pointerX, pointerY, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 
             if(pixels[0] == Math.round(CubeColor[0]*255) && pixels[1] == Math.round(CubeColor[1]*255) &&
-                pixels[2] == Math.round(CubeColor[2]*255) && pixels[3] == Math.round(CubeColor[3]*255))
+                pixels[2] >= Math.round(CubeColor[2]*255) && pixels[2] <= Math.round((CubeColor[2]+0.05)*255) && pixels[3] == Math.round(CubeColor[3]*255))
                 {
                     CubeSelected = true;
-                    IcosphereSelected = false;
+                    RandomSelected = false;
                     TorusSelected = false;
                 }
-            else if(pixels[0] == Math.round(IcosphereColor[0]*255) && pixels[1] == Math.round(IcosphereColor[1]*255) &&
-                pixels[2] == Math.round(IcosphereColor[2]*255) && pixels[3] == Math.round(IcosphereColor[3]*255))
+            else if(pixels[0] == Math.round(RandomColor[0]*255) && pixels[1] == Math.round(RandomColor[1]*255) &&
+                pixels[2] >= Math.round(RandomColor[2]*255) && pixels[2] <= Math.round((RandomColor[2]+0.03)*255) && pixels[3] == Math.round(RandomColor[3]*255))
                 {
                     CubeSelected = false;
-                    IcosphereSelected = true;
+                    RandomSelected = true;
                     TorusSelected = false;
                 }
             else if(pixels[0] == Math.round(TorusColor[0]*255) && pixels[1] == Math.round(TorusColor[1]*255) &&
-                pixels[2] == Math.round(TorusColor[2]*255) && pixels[3] == Math.round(TorusColor[3]*255))
+            pixels[2] >= Math.round(TorusColor[2]*255) && pixels[2] <= Math.round((TorusColor[2]+0.03)*255) && pixels[3] == Math.round(TorusColor[3]*255))
                 {
                     CubeSelected = false;
-                    IcosphereSelected = false;
+                    RandomSelected = false;
                     TorusSelected = true;
                 }
             else
             {
                 CubeSelected = false;
-                IcosphereSelected = false;
+                RandomSelected = false;
                 TorusSelected = false;
             }
         }
@@ -250,7 +427,7 @@ window.onload = () =>
             ArrowX.updateCamera(tempCamera);
             ArrowZ.updateCamera(tempCamera);
             CubeMesh.updateCamera(tempCamera);
-            IcosphereMesh.updateCamera(tempCamera);
+            RandomMesh.updateCamera(tempCamera);
             TorusMesh.updateCamera(tempCamera);
             CentreTriangle.updateCamera(tempCamera);
         }
@@ -267,7 +444,7 @@ window.onload = () =>
             ArrowX.updateCamera(tempCamera);
             ArrowZ.updateCamera(tempCamera);
             CubeMesh.updateCamera(tempCamera);
-            IcosphereMesh.updateCamera(tempCamera);
+            RandomMesh.updateCamera(tempCamera);
             TorusMesh.updateCamera(tempCamera);
             CentreTriangle.updateCamera(tempCamera);
         }
@@ -278,16 +455,16 @@ window.onload = () =>
 
             // Place Cube at the center of side AB of the triangle
             CubeToggle = true;
-            CubeMesh.transform.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
-            CubeMesh.transform.updateMVPMatrix();
+            CubeMesh.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
+            CubeMesh.updateMVPMatrix();
             // Place Icospehere at the center of side BC of triangle
-            IcosphereToggle = true;
-            IcosphereMesh.transform.setRotate(vec3.fromValues(0,0,1), IcosphereAngle += Math.PI/2);
-            IcosphereMesh.transform.updateMVPMatrix();
+            RandomToggle = true;
+            RandomMesh.setRotate(vec3.fromValues(0,0,1), RandomAngle += Math.PI/2);
+            RandomMesh.updateMVPMatrix();
             // Place Torus at the center of side CA of triangle
             TorusToggle = true;
-            TorusMesh.transform.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
-            TorusMesh.transform.updateMVPMatrix();        
+            TorusMesh.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
+            TorusMesh.updateMVPMatrix();        
         }
 
         else if(ev.key == 'Escape')
@@ -298,7 +475,6 @@ window.onload = () =>
 
     // Extra for checking continuous coordinates of the mouse
     document.addEventListener("mousemove" , (ev)=> {
-        SelectMode = document.getElementById("checkbox").checked;
         let mouseX = ev.clientX;
         let mouseY = ev.clientY;
 
@@ -326,14 +502,28 @@ mouseYElement.appendChild(mouseY);
 
 //////////////////////////////////////////////////////
 ////// Setting up the modes using on change value ///
-console.log(document.getElementById("mode"));
+
+console.log(document.getElementById("checkbox"));
+document.getElementById("checkbox").onchange = () => {
+    CubeSelected = false;
+    RandomSelected = false;
+    TorusSelected = false;
+    CubeMesh.resetSelected();
+    RandomMesh.resetSelected();
+    TorusMesh.resetSelected();
+
+    SelectMode = document.getElementById("checkbox").checked;
+};
 
 document.getElementById("Mode").onchange = function () {
-    if(mode_value != 5)
+    if(mode_value != 7)
     {
             CubeSelected = false;
-            IcosphereSelected = false;
+            RandomSelected = false;
             TorusSelected = false;
+            CubeMesh.resetSelected();
+            RandomMesh.resetSelected();
+            TorusMesh.resetSelected();
     }
 
     if(this.value == "Axes")
@@ -347,8 +537,17 @@ document.getElementById("Mode").onchange = function () {
         ArrowZ.transform.updateMVPMatrix();
         CentreTriangleToggle=false;
         CubeToggle = false;
-        IcosphereToggle = false;
+        RandomToggle = false;
         TorusToggle = false;
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
     }
     else if( this.value == "Triangle Corner")
     {
@@ -363,16 +562,25 @@ document.getElementById("Mode").onchange = function () {
 
         // Place Cube at the top of the triangle
         CubeToggle = true;
-        CubeMesh.transform.setTranslate(pointA);
-        CubeMesh.transform.updateMVPMatrix();
+        CubeMesh.setTranslate(pointA);
+        CubeMesh.updateMVPMatrix();
         // Place Icospehere at the bottom left of triangle
-        IcosphereToggle = true;
-        IcosphereMesh.transform.setTranslate(pointB);
-        IcosphereMesh.transform.updateMVPMatrix();
+        RandomToggle = true;
+        RandomMesh.setTranslate(pointB);
+        RandomMesh.updateMVPMatrix();
         // Place Torus at the bottom right of triangle
         TorusToggle = true;
-        TorusMesh.transform.setTranslate(pointC);
-        TorusMesh.transform.updateMVPMatrix();
+        TorusMesh.setTranslate(pointC);
+        TorusMesh.updateMVPMatrix();
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
     }
     else if(this.value == "Triangle Side")
     {
@@ -385,59 +593,89 @@ document.getElementById("Mode").onchange = function () {
 
         // Place Cube at the center of side AB of the triangle
         CubeToggle = true;
-        CubeMesh.transform.setTranslate(midAB);
-        CubeMesh.transform.updateMVPMatrix();
+        CubeMesh.setTranslate(midAB);
+        CubeMesh.updateMVPMatrix();
         // Place Icospehere at the center of side BC of triangle
-        IcosphereToggle = true;
-        IcosphereMesh.transform.setTranslate(midBC);
-        IcosphereMesh.transform.updateMVPMatrix();
+        RandomToggle = true;
+        RandomMesh.setTranslate(midBC);
+        RandomMesh.updateMVPMatrix();
         // Place Torus at the center of side CA of triangle
         TorusToggle = true;
-        TorusMesh.transform.setTranslate(midCA);
-        TorusMesh.transform.updateMVPMatrix();
+        TorusMesh.setTranslate(midCA);
+        TorusMesh.updateMVPMatrix();
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
     }
     else if(this.value == "Scale")
     {
         mode_value = 4;
         CentreTriangleToggle=true;
 
-        // Place Cube at the center of side AB of the triangle
         CubeToggle = true;
         var CubeScale = CubeMesh.getScale();
-        CubeMesh.transform.setScale([CubeScale[0]*0.5, CubeScale[0]*0.5, CubeScale[0]*0.5]);
-        CubeMesh.transform.updateMVPMatrix();
-        // Place Icospehere at the center of side BC of triangle
-        IcosphereToggle = true;
-        var IcosphereScale = IcosphereMesh.getScale();
-        IcosphereMesh.transform.setScale([IcosphereScale[0]*2,IcosphereScale[0]*2,IcosphereScale[0]*2]);
-        IcosphereMesh.transform.updateMVPMatrix();
-        // Place Torus at the center of side CA of triangle
+        CubeMesh.setScale([CubeScale[0]*0.5, CubeScale[0]*0.5, CubeScale[0]*0.5]);
+        CubeMesh.updateMVPMatrix();
+        RandomToggle = true;
+        var RandomScale = RandomMesh.getScale();
+        RandomMesh.setScale([RandomScale[0]*2,RandomScale[0]*2,RandomScale[0]*2]);
+        RandomMesh.updateMVPMatrix();
         TorusToggle = true;
         var TorusScale = TorusMesh.getScale();
-        TorusMesh.transform.setScale([TorusScale[0]*3,TorusScale[0]*3,TorusScale[0]*3]);
-        TorusMesh.transform.updateMVPMatrix();
+        TorusMesh.setScale([TorusScale[0]*3,TorusScale[0]*3,TorusScale[0]*3]);
+        TorusMesh.updateMVPMatrix();
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
     }
     else if(this.value == "Object Rotate")
     {
         mode_value = 5;
         CentreTriangleToggle=true;
 
-        // Place Cube at the center of side AB of the triangle
         CubeToggle = true;
-        CubeMesh.transform.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
-        CubeMesh.transform.updateMVPMatrix();
-        // Place Icospehere at the center of side BC of triangle
-        IcosphereToggle = true;
-        IcosphereMesh.transform.setRotate(vec3.fromValues(0,0,1), IcosphereAngle += Math.PI/2);
-        IcosphereMesh.transform.updateMVPMatrix();
-        // Place Torus at the center of side CA of triangle
+        CubeMesh.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
+        CubeMesh.updateMVPMatrix();
+        RandomToggle = true;
+        RandomMesh.setRotate(vec3.fromValues(0,0,1), RandomAngle += Math.PI/2);
+        RandomMesh.updateMVPMatrix();
         TorusToggle = true;
-        TorusMesh.transform.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
-        TorusMesh.transform.updateMVPMatrix();
+        TorusMesh.setRotate(vec3.fromValues(1,0,0), TorusAngle += Math.PI/2);
+        TorusMesh.updateMVPMatrix();
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
     }
     else if(this.value == "Camera Rotate")
     {
         mode_value = 6;
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
     }
     else
     {
@@ -468,17 +706,36 @@ function animate()
     {
         CentreTriangle.draw(shader);
     }
-    if(CubeToggle == true)
+
+    if(SelectMode == false)
     {
-        CubeMesh.draw(shader, CubeSelected);
+        if(CubeToggle == true && CubeRead == true)
+        {
+            CubeMesh.draw(shader, CubeSelected);
+        }
+        if(RandomToggle == true)
+        {
+            RandomMesh.draw(shader, RandomSelected);
+        }
+        if(TorusToggle == true)
+        {
+            TorusMesh.draw(shader, TorusSelected);
+        }
     }
-    if(IcosphereToggle == true)
+    else
     {
-        IcosphereMesh.draw(shader, IcosphereSelected);
-    }
-    if(TorusToggle == true)
-    {
-        TorusMesh.draw(shader, TorusSelected);
+        if(CubeToggle == true && CubeRead == true)
+        {
+            CubeMesh.draw(shader, CubeSelected);
+        }
+        if(RandomToggle == true && RandomRead == true)
+        {
+            RandomMesh.draw(shader, RandomSelected);
+        }
+        if(TorusToggle == true && RandomRead == true)
+        {
+            TorusMesh.draw(shader, TorusSelected);
+        }
     }
     if(mode_value == 7)
     {
