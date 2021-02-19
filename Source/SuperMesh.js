@@ -23,12 +23,11 @@ export default class SuperMesh
         for(let i in this.objects)
         {
             this.objects[i].transform.setScale(scale);
+            // this.objects[i].setScale(scale);
         }
     }
     setTranslate(vecTrans)
     {
-        console.log(this.objects);
-        console.log(this.objects[0]);
         for(let i in this.objects)
         {
             this.objects[i].transform.setTranslate(vecTrans);

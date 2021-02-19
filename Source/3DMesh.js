@@ -91,6 +91,7 @@ export default class Mesh
     {
         return this.scale;
     }
+    
     setScale(scale)
     {
         this.scalingVal = scale;

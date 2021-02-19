@@ -334,6 +334,9 @@ let mode_value = 0;
 let terminate = false;
 let MouseCoordinates = 0;
 var SelectMode=false;
+var CameraMouseDragY = false;
+var MouseDownX, MouseDownY;
+var SetReset = false;
 /////////////////////////////////////////////////////
 window.onload = () => 
 {
@@ -356,7 +359,6 @@ window.onload = () =>
             var FaceCube = CubeMesh.isFaceSelected(pixels);
             var FaceRandom = RandomMesh.isFaceSelected(pixels);
             var FaceTorus = TorusMesh.isFaceSelected(pixels);
-            console.log(FaceCube);
             if(FaceCube == 1)
             {
                 RandomMesh.resetSelected();
@@ -412,6 +414,76 @@ window.onload = () =>
             }
         }
     });
+
+    renderer.getCanvas().addEventListener("mousedown", (event) => {
+        if(mode_value == 6)
+        {
+            let mouseX = event.clientX;
+            let mouseY = event.clientY;
+
+            let render_area = renderer.getCanvas().getBoundingClientRect();
+            mouseX = mouseX - render_area.left;
+            mouseY = mouseY - render_area.top;
+
+            MouseCoordinates = renderer.mouseToClipCoord(mouseX, mouseY);
+            
+            [MouseDownX, MouseDownY] = MouseCoordinates;
+            CameraMouseDragY = true;
+        }
+    });
+    renderer.getCanvas().addEventListener("mouseup", (event) => {
+        CameraMouseDragY = false;
+    });
+ 
+    document.addEventListener("mousemove" , (ev)=> {
+        let mouseX = ev.clientX;
+        let mouseY = ev.clientY;
+
+        let render_area = renderer.getCanvas().getBoundingClientRect();
+        mouseX = mouseX - render_area.left;
+        mouseY = mouseY - render_area.top;
+
+        MouseCoordinates = renderer.mouseToClipCoord(mouseX, mouseY);
+        if(CameraMouseDragY == true && mode_value == 6)
+        {
+            var moveX = MouseCoordinates[0] - MouseDownX;
+            var radius = 100;
+            if(moveX >= 0) //Moved in positive X direction
+            {
+                // radius*theta = moveX
+                CameraAngle = moveX/radius;
+                var tempCamera = camera;
+                tempCamera.eye.x = camera.radius * Math.sin(CameraAngle);
+                tempCamera.eye.y = camera.eye.y;
+                tempCamera.eye.z = camera.radius * Math.cos(CameraAngle);
+
+                ArrowY.updateCamera(tempCamera);
+                ArrowX.updateCamera(tempCamera);
+                ArrowZ.updateCamera(tempCamera);
+                CubeMesh.updateCamera(tempCamera);
+                RandomMesh.updateCamera(tempCamera);
+                TorusMesh.updateCamera(tempCamera);
+                CentreTriangle.updateCamera(tempCamera);
+            }
+            else
+            {
+                CameraAngle = moveX/radius;
+                var tempCamera = camera;
+                tempCamera.eye.x = camera.radius * Math.sin(CameraAngle);
+                tempCamera.eye.y = camera.eye.y;
+                tempCamera.eye.z = camera.radius * Math.cos(CameraAngle);
+
+                ArrowY.updateCamera(tempCamera);
+                ArrowX.updateCamera(tempCamera);
+                ArrowZ.updateCamera(tempCamera);
+                CubeMesh.updateCamera(tempCamera);
+                RandomMesh.updateCamera(tempCamera);
+                TorusMesh.updateCamera(tempCamera);
+                CentreTriangle.updateCamera(tempCamera);
+            }
+        }
+    });
+
 
     document.addEventListener("keydown", (ev) => {
 
@@ -473,37 +545,13 @@ window.onload = () =>
         }
     });
 
-    // Extra for checking continuous coordinates of the mouse
-    document.addEventListener("mousemove" , (ev)=> {
-        let mouseX = ev.clientX;
-        let mouseY = ev.clientY;
 
-        let render_area = renderer.getCanvas().getBoundingClientRect();
-        mouseX = mouseX - render_area.left;
-        mouseY = mouseY - render_area.top;
-
-        MouseCoordinates = renderer.mouseToClipCoord(mouseX, mouseY);
-    });
 };
 
-// Shows Mode number
-var modeElement = document.querySelector('#mode');
-var modeNode = document.createTextNode("");
-modeElement.appendChild(modeNode);
-
-// Mouse Coordinates in Canvas system
-var mouseXElement = document.querySelector('#mousex');
-var mouseX = document.createTextNode("");
-mouseXElement.appendChild(mouseX);
-
-var mouseYElement = document.querySelector('#mousey');
-var mouseY = document.createTextNode("");
-mouseYElement.appendChild(mouseY);
 
 //////////////////////////////////////////////////////
 ////// Setting up the modes using on change value ///
 
-console.log(document.getElementById("checkbox"));
 document.getElementById("checkbox").onchange = () => {
     CubeSelected = false;
     RandomSelected = false;
@@ -526,6 +574,11 @@ document.getElementById("Mode").onchange = function () {
             TorusMesh.resetSelected();
     }
 
+    if(SetReset==true && mode_value != 4)
+    {
+        var resetNode = document.getElementById("reset");
+        resetNode.textContent = "Reset";
+    }
     if(this.value == "Axes")
     {
         mode_value = 1;
@@ -584,6 +637,12 @@ document.getElementById("Mode").onchange = function () {
     }
     else if(this.value == "Triangle Side")
     {
+        ArrowX.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowX.transform.updateMVPMatrix();
+        ArrowY.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowY.transform.updateMVPMatrix();
+        ArrowZ.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowZ.transform.updateMVPMatrix();
         mode_value = 3;
         CentreTriangleToggle=true;
 
@@ -615,6 +674,13 @@ document.getElementById("Mode").onchange = function () {
     }
     else if(this.value == "Scale")
     {
+        ArrowX.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowX.transform.updateMVPMatrix();
+        ArrowY.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowY.transform.updateMVPMatrix();
+        ArrowZ.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowZ.transform.updateMVPMatrix();
+
         mode_value = 4;
         CentreTriangleToggle=true;
 
@@ -639,9 +705,18 @@ document.getElementById("Mode").onchange = function () {
         CubeMesh.resetSelected();
         RandomMesh.resetSelected();
         TorusMesh.resetSelected();
+
+        SetReset = false;
     }
     else if(this.value == "Object Rotate")
     {
+        ArrowX.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowX.transform.updateMVPMatrix();
+        ArrowY.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowY.transform.updateMVPMatrix();
+        ArrowZ.transform.setTranslate(vec3.fromValues(window.innerWidth/2 - window.innerWidth/10, window.innerHeight/2 - window.innerHeight/10, 0));
+        ArrowZ.transform.updateMVPMatrix();
+
         mode_value = 5;
         CentreTriangleToggle=true;
 
@@ -684,11 +759,86 @@ document.getElementById("Mode").onchange = function () {
 
 };
 
+document.getElementById("reset").onclick = function()
+{
+    if(mode_value == 4 && SetReset == false)
+    {
+        CentreTriangleToggle=true;
+
+        CubeToggle = true;
+        var CubeScale = CubeMesh.getScale();
+        CubeMesh.setScale([CubeScale[0]*1, CubeScale[0]*1, CubeScale[0]*1]);
+        CubeMesh.updateMVPMatrix();
+        RandomToggle = true;
+        var RandomScale = RandomMesh.getScale();
+        RandomMesh.setScale([RandomScale[0]*1,RandomScale[0]*1,RandomScale[0]*1]);
+        RandomMesh.updateMVPMatrix();
+        TorusToggle = true;
+        var TorusScale = TorusMesh.getScale();
+        TorusMesh.setScale([TorusScale[0]*1,TorusScale[0]*1,TorusScale[0]*1]);
+        TorusMesh.updateMVPMatrix();
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
+        SetReset=true;
+
+        var resetNode = document.getElementById("reset");
+        resetNode.textContent = "Scale";
+    }
+
+    else if(mode_value == 4 && SetReset==true)
+    {
+        CentreTriangleToggle=true;
+
+        CubeToggle = true;
+        var CubeScale = CubeMesh.getScale();
+        CubeMesh.setScale([CubeScale[0]*0.5, CubeScale[0]*0.5, CubeScale[0]*0.5]);
+        CubeMesh.updateMVPMatrix();
+        RandomToggle = true;
+        var RandomScale = RandomMesh.getScale();
+        RandomMesh.setScale([RandomScale[0]*2,RandomScale[0]*2,RandomScale[0]*2]);
+        RandomMesh.updateMVPMatrix();
+        TorusToggle = true;
+        var TorusScale = TorusMesh.getScale();
+        TorusMesh.setScale([TorusScale[0]*3,TorusScale[0]*3,TorusScale[0]*3]);
+        TorusMesh.updateMVPMatrix();
+
+        SelectMode=false;
+
+        CubeSelected = false;
+        RandomSelected = false;
+        TorusSelected = false;
+        CubeMesh.resetSelected();
+        RandomMesh.resetSelected();
+        TorusMesh.resetSelected();
+        SetReset=false;
+
+        var resetNode = document.getElementById("reset");
+        resetNode.textContent = "Reset";
+    }
+};
+////////////////////////////////////////////////////
+
+// Mouse Coordinates in Canvas system
+var mouseXElement = document.querySelector('#mousex');
+var mouseX = document.createTextNode("");
+mouseXElement.appendChild(mouseX);
+
+var mouseYElement = document.querySelector('#mousey');
+var mouseY = document.createTextNode("");
+mouseYElement.appendChild(mouseY);
+
+
 function animate()
 {
     renderer.clear();
     // Text Box dynamic Handler
-    modeNode.nodeValue = mode_value;
     if(typeof MouseCoordinates[0] != 'undefined')
     {
         mouseX.nodeValue = MouseCoordinates[0].toPrecision(4);
@@ -744,6 +894,14 @@ function animate()
     else
     {
         document.getElementsByClassName("toggle-button-cover")[0].style.display = "none";
+    }
+    if(mode_value == 4)
+    {
+        document.getElementsByClassName("resetButton")[0].style.display = "block";
+    }
+    else
+    {
+        document.getElementsByClassName("resetButton")[0].style.display = "none";
     }
 
     // Activated by pressing 'Escape' key
