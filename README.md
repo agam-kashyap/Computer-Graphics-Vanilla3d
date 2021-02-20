@@ -9,35 +9,29 @@ The different modes are:
 ```
 Axes: Shows the world coordinates
 ```
-!["Axes"](Images/Axes.png){:height="50%}
-
-<img src="Images/Axes.png" width="50%">
-
+!["Axes"](Images/Axes.png)
 ```
 Triangle Corner:
 ```
-
-<img src="Images/Corner.png" width="50%>
-
+!["TriangleCorner"](Images/Corner.png)
 ```
 Triangle Side:
 ```
-<img src="Images/Side.png" width="50%>
+!["TriangleSide"](Images/Side.png)
 ```
 Scale:
 ```
-<img src="Images/Scale.png" width="50%>
+!["Scale"](Images/Scale.png)
 ```
 Object Rotate:
 ```
-<img src="Images/Rotate.png" width="50%>
+!["ObjectRotate](Images/Rotate.png)
 ```
 Camera Rotate:
 ```
-<img src="Images/Camera.png" width="50%>
+!["CameraRotate](Images/Camera.png)
 ```
 Select:
 ```
 !["ObjectSelect"](Images/ObjectSelect.png)
-<img src="Images/ObjectSelect.png" width="50%>
-<img src="Images/FaceSelect.png" width="50%>
+!["FaceSelect"](Images/FaceSelect.png)
