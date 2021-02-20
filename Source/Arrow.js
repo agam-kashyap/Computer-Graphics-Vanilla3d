@@ -86,14 +86,4 @@ export default class Arrow
         this.center = vec3.fromValues(camera.center.x, camera.center.y, camera.center.z);
         this.up = vec3.fromValues(camera.up.x, camera.up.y, camera.up.z);
     }
-
-    resetTranslate()
-    {
-
-    }
-
-    setTranslate()
-    {
-
-    }
 };

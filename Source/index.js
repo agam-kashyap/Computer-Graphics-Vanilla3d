@@ -22,15 +22,7 @@ shader.use();
 
 /************************* 
 ** Projection values **
-*************************/
-// var proj = {
-//     'left' : -window.innerWidth/2,
-//     'right' : window.innerWidth/2,
-//     'top' : window.innerHeight/2,
-//     'bottom' : -window.innerHeight/2,
-//     'near' : -10000,
-//     'far' : 10000,
-// }   
+*************************/  
 
 var proj = {
     fovy: Math.PI/3,
@@ -74,7 +66,7 @@ var ArrowRead= false;
 var ArrowX, ArrowY, ArrowZ;
 var rotationAngleX = 0;
 var rotationAngleY = Math.PI/2;
-var rotationAngleZ = Math.PI/2;
+var rotationAngleZ = -Math.PI/2;
 var rotationArrowX = vec3.create();
 vec3.set(rotationArrowX, 1,0,0); 
 var rotationArrowY = vec3.create();
