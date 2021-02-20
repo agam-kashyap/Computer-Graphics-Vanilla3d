@@ -317,12 +317,6 @@ var pointC = vec3.fromValues(Corners[8],Corners[9],Corners[10]);
 
 // Variables Relevant to all Modes
 let mode_value = 0; 
-// D 1 -> Place objects at the triangle's corner
-// E 2 -> Place at triangle's edge center
-// F 3 -> Rotate objects about different axis for each model
-// G 4 -> Scale by 0.5, 2, 3
-// H 5 -> Pick Objects
-
 let terminate = false;
 let MouseCoordinates = 0;
 var SelectMode=false;
@@ -521,7 +515,7 @@ window.onload = () =>
             CubeToggle = true;
             CubeMesh.setRotate(vec3.fromValues(0,1,0), CubeAngle += Math.PI/2);
             CubeMesh.updateMVPMatrix();
-            // Place Icospehere at the center of side BC of triangle
+            // Place Random at the center of side BC of triangle
             RandomToggle = true;
             RandomMesh.setRotate(vec3.fromValues(0,0,1), RandomAngle += Math.PI/2);
             RandomMesh.updateMVPMatrix();
@@ -609,7 +603,7 @@ document.getElementById("Mode").onchange = function () {
         CubeToggle = true;
         CubeMesh.setTranslate(pointA);
         CubeMesh.updateMVPMatrix();
-        // Place Icospehere at the bottom left of triangle
+        // Place Random at the bottom left of triangle
         RandomToggle = true;
         RandomMesh.setTranslate(pointB);
         RandomMesh.updateMVPMatrix();
@@ -646,7 +640,7 @@ document.getElementById("Mode").onchange = function () {
         CubeToggle = true;
         CubeMesh.setTranslate(midAB);
         CubeMesh.updateMVPMatrix();
-        // Place Icospehere at the center of side BC of triangle
+        // Place Random at the center of side BC of triangle
         RandomToggle = true;
         RandomMesh.setTranslate(midBC);
         RandomMesh.updateMVPMatrix();
