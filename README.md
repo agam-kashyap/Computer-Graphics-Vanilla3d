@@ -56,3 +56,41 @@ Select:
 *Torus Selected*
 !["FaceSelect"](Images/FaceSelect.png)
 *One face of Cube selected*
+
+# File Structure
+
+- Source
+  - 3DMesh.js
+  - Arrow.js
+  - fragment.js
+  - index.js
+  - renderer.js
+  - shader.js
+  - SuperMesh.js
+  - transform.js
+  - Triangle.js
+  - vertex.js
+  - index.html
+  - globalStyle.css
+  - models
+    - Arrow.obj
+    - Cube
+      - Side1.obj
+      - Side2.obj
+      - Side3.obj
+      - Side4.obj
+      - Side5.obj
+      - Side6.obj
+    - Torus
+      - TQuater1.obj
+      - TQuater2.obj
+      - TQuater3.obj
+      - TQuater4.obj
+    - Surprise
+      - RandomPart1.obj
+      - RandomPart2.obj
+      - RandomPart3.obj
+      - RandomPart4.obj
+- Report.pdf
+- Images
+- VideoReport.mp4
